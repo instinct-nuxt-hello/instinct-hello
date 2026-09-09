@@ -1,4 +1,4 @@
-name: Deploy to surge.sh
+name: Deploy to Netlify
 
 on:
   push:
@@ -18,16 +18,10 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps --no-audit --no-fund
 
-      - name: Generate static site
-        run: npm run generate
-
-      - name: Deploy to surge.sh
+      - name: Deploy to Netlify (build + publish)
         env:
-          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-          SURGE_PASSWORD: ${{ secrets.SURGE_PASSWORD }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
-          set -euo pipefail
-          npm install --no-audit --no-fund -g surge
-          TOKEN=$(curl -sf -X POST -u "$SURGE_LOGIN:$SURGE_PASSWORD" https://surge.surge.sh/token | jq -r '.token // empty')
-          test -n "$TOKEN"
-          SURGE_TOKEN="$TOKEN" surge ./.output/public instinct-hello.surge.sh
+          npm install --no-audit --no-fund -g netlify-cli
+          netlify deploy --build --prod

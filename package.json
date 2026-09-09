@@ -2,11 +2,13 @@
   "name": "instinct-hello",
   "private": true,
   "scripts": {
-    "generate": "nuxi generate",
     "dev": "nuxi dev",
-    "build": "nuxi build"
+    "build": "nuxi build",
+    "generate": "nuxi generate"
   },
   "dependencies": {
+    "@nuxtjs/tailwindcss": "^6.12.2",
+    "mysql2": "^3.11.3",
     "nuxt": "3.13.2"
   },
   "overrides": {
