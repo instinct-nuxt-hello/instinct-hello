@@ -7,6 +7,9 @@
     "build": "nuxi build"
   },
   "dependencies": {
-    "nuxt": "^3.13.2"
+    "nuxt": "3.13.2"
+  },
+  "overrides": {
+    "@parcel/watcher-wasm": "2.5.6"
   }
 }
