@@ -1,0 +1,33 @@
+name: Deploy to surge.sh
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Generate static site
+        run: npm run generate
+
+      - name: Deploy to surge.sh
+        env:
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_PASSWORD: ${{ secrets.SURGE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund -g surge
+          TOKEN=$(curl -sf -u "$SURGE_LOGIN:$SURGE_PASSWORD" https://surge.surge.sh/token | jq -r '.token // empty')
+          test -n "$TOKEN"
+          SURGE_TOKEN="$TOKEN" surge ./.output/public instinct-hello.surge.sh
