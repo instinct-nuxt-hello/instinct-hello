@@ -1,0 +1,12 @@
+{
+  "name": "instinct-hello",
+  "private": true,
+  "scripts": {
+    "generate": "nuxi generate",
+    "dev": "nuxi dev",
+    "build": "nuxi build"
+  },
+  "dependencies": {
+    "nuxt": "^3.13.2"
+  }
+}
